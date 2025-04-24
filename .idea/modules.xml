@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HashingPixels.iml" filepath="$PROJECT_DIR$/HashingPixels.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HashingPixels.main.iml" filepath="$PROJECT_DIR$/.idea/modules/HashingPixels.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HashingPixels.test.iml" filepath="$PROJECT_DIR$/.idea/modules/HashingPixels.test.iml" />
     </modules>
   </component>
 </project>

@@ -1,3 +1,6 @@
+package tests;
+
+import logic.ColorMap;
 import org.junit.jupiter.api.Test;
 import java.awt.Color;
 import static org.junit.jupiter.api.Assertions.*;

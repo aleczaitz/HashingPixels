@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="HashTableTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2025-04-24T23:34:14" hostname="Mac" time="0.017">
+  <properties/>
+  <testcase name="testFind()" classname="HashTableTest" time="0.007"/>
+  <testcase name="testSize()" classname="HashTableTest" time="0.0"/>
+  <testcase name="testToString()" classname="HashTableTest" time="0.003"/>
+  <testcase name="testAverageProbeCountAndProbes()" classname="HashTableTest" time="0.001"/>
+  <testcase name="testCapacity()" classname="HashTableTest" time="0.0"/>
+  <testcase name="testInsertAndContains()" classname="HashTableTest" time="0.0"/>
+  <testcase name="testGetAll()" classname="HashTableTest" time="0.0"/>
+  <testcase name="testRemove()" classname="HashTableTest" time="0.0"/>
+  <testcase name="testMakeEmpty()" classname="HashTableTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

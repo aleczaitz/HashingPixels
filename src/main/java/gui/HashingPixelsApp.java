@@ -1,5 +1,8 @@
 package gui;
 
+import logic.Encode;
+import logic.ReColor;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,9 +17,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
-import logic.Encode;
-import logic.ReColor;
 
 public class HashingPixelsApp extends Application {
 

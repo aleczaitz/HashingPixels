@@ -10,6 +10,7 @@ repositories {
 dependencies {
     implementation 'org.openjfx:javafx-controls:21'
     implementation 'org.openjfx:javafx-fxml:21'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 
 javafx {
@@ -29,4 +30,8 @@ tasks.withType(JavaExec) {
             "--add-modules",
             "javafx.controls,javafx.fxml"
     ]
+}
+
+test {
+    useJUnitPlatform()
 }

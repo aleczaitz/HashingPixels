@@ -1,3 +1,7 @@
+package tests;
+
+import logic.Encode;
+import logic.ReColor;
 import org.junit.jupiter.api.Test;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
