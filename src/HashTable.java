@@ -152,6 +152,7 @@ public class HashTable<E> {
 
     private void doClear() {
         occupiedCt = 0;
+        currentActiveEntries = 0;
         for (int i = 0; i < array.length; i++)
             array[i] = null;
     }
