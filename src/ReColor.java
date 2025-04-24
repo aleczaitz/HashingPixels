@@ -1,80 +1,79 @@
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.io.IOException;
 
+/**
+ * Handles recoloring of images for demonstration and processing.
+ * Currently, supports converting an image to red-channel only.
+ */
 public class ReColor {
-    BufferedImage img;
-    String imageName;
-    String redImageName;
-    int cube;
-    int height = 0;
-    int width = 0;
-    int colorLimit = 0;
+
+    private BufferedImage img;
+    private final String imageName;
+    private final String redImageName;
+    private final int cube;
+    private final int height;
+    private final int width;
+    private final int colorLimit;
 
     /**
-     * Set up the ReColor Class
-     * @param filename  File containing the original image
-     * @param cube Size of cube for which will accumulate colors
-     * @param colorLimit
+     * Initializes ReColor with an image and color parameters.
+     * @param filename the image file to load
+     * @param cube size of color quantization cube (not yet used)
+     * @param colorLimit max number of colors (not yet used)
      */
-    ReColor(String filename, int cube, int colorLimit) {
-        img = null;
+    public ReColor(String filename, int cube, int colorLimit) {
         this.cube = cube;
         this.colorLimit = colorLimit;
-        File f = null;
-        String[] p = filename.split("\\.");
-        System.out.println("File name " + filename);
-        imageName = p[0] + colorLimit + "." + p[1];
-        redImageName = p[0] + "Red." + p[1];
+
+        String[] parts = filename.split("\\.");
+        this.imageName = parts[0] + colorLimit + "." + parts[1];
+        this.redImageName = parts[0] + "Red." + parts[1];
+
         try {
-            f = new File(
-                    filename);
-            img = ImageIO.read(f);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            File file = new File(filename);
+            this.img = ImageIO.read(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load image: " + filename, e);
         }
-        width = img.getWidth();
-        height = img.getHeight();
+
+        this.width = img.getWidth();
+        this.height = img.getHeight();
     }
 
+    /**
+     * Creates a red-channel version of the image and saves it to disk.
+     */
     public void makeRed() {
-        BufferedImage img2 = new BufferedImage(width, height, img.getType()); //makes new image
-        for (int y = 0; y < height; y++) { // for each row
-            for (int x = 0; x < width; x++) { // for each column
+        BufferedImage redImg = new BufferedImage(width, height, img.getType());
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 int pixel = img.getRGB(x, y);
-                int alpha = (pixel >> 24) & 0xff; //gets the transparency measure section
-                int r = (pixel >> 16) & 0xff;  //gets the red section
-                int g = (pixel >> 8) & 0xff;   // gets the green section
-                int b = pixel & 0xff;          //gets the blue section
-                // set new RGB keeping the alpha and the color wanted. Setting others to 0.
-                pixel = (alpha << 24) | (r << 16) | (0 << 8) | 0; // sets 0s for G and B values (101011 101101 000000 000000)
-                img2.setRGB(x, y, pixel); // sets the color of the pixel
+                int alpha = (pixel >> 24) & 0xff;
+                int red = (pixel >> 16) & 0xff;
+
+                int redOnlyPixel = (alpha << 24) | (red << 16);
+                redImg.setRGB(x, y, redOnlyPixel);
             }
         }
+
         try {
-            File f = new File(
-                    redImageName);
-            ImageIO.write(img2, "png", f);
-        } catch (Exception e) {
-            System.out.println(e);
+            ImageIO.write(redImg, "png", new File(redImageName));
+        } catch (IOException e) {
+            System.err.println("Failed to write red image: " + redImageName);
+            e.printStackTrace();
         }
     }
-
-
-
-
 
     public static void main(String[] args) {
         String[] files = {"chart.png", "bird.png", "butterfly.png", "cat.png", "dice.png", "flowers.png"};
         int[] colorMax = {5, 100, 100, 25, 6, 40};
 
         for (int i = 0; i < files.length; i++) {
-
-            ReColor r = new ReColor(files[i], 6, colorMax[i]);
-            r.makeRed();
-            //r.grabColors();
+            ReColor recolor = new ReColor(files[i], 6, colorMax[i]);
+            recolor.makeRed();
         }
     }
 }

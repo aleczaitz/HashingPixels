@@ -1,6 +1,14 @@
 import java.awt.*;
 
+/**
+ * Represents a quantized color used for mapping and comparison.
+ * Used in image encoding and color reduction.
+ */
 public class ColorMap implements Comparable<ColorMap> {
+
+    // ==========================
+    // Fields
+    // ==========================
     public int alpha;
     public int red;
     public int green;
@@ -8,53 +16,60 @@ public class ColorMap implements Comparable<ColorMap> {
     public int len;
     public int occurCt;
     public Color representativeColor;
-    public Color mappedcolor; // This is the color that will actually be on the image based on n number of colors allowed
-//    public int distance;
+    public Color mappedcolor;
 
-    ColorMap(int alpha, int r, int g, int b,int len) {
-        this.alpha = alpha/ len;
-        this.red = r/ len;
-        this.green = g/ len;
-        this.blue = b/ len;
+    // ==========================
+    // Constructor
+    // ==========================
+    public ColorMap(int alpha, int r, int g, int b, int len) {
+        this.alpha = alpha / len;
+        this.red = r / len;
+        this.green = g / len;
+        this.blue = b / len;
         this.len = len;
-        this.occurCt = 0;
-
-        this.representativeColor = new Color(red* len + len /2, green* len + len /2, blue* len + len /2);
-        occurCt =1;
+        this.occurCt = 1;
+        this.representativeColor = new Color(
+                red * len + len / 2,
+                green * len + len / 2,
+                blue * len + len / 2
+        );
     }
 
-    void setMappedColor(ColorMap c){
-        this.representativeColor = new Color(c.red* len + len /2, c.green* len + len /2, c.blue* len + len /2);
+    // ==========================
+    // Public Methods
+    // ==========================
+    public void setMappedColor(ColorMap c) {
+        this.representativeColor = new Color(
+                c.red * len + len / 2,
+                c.green * len + len / 2,
+                c.blue * len + len / 2
+        );
     }
-    Color getRepresentativeColor(){
+
+    public Color getRepresentativeColor() {
         return representativeColor;
     }
 
+    @Override
     public String toString() {
         return "Color  (" + red + "," + green + "," + blue + ") " + occurCt;
     }
+
     @Override
-    // Will allow you to sort the ColorMap by most popular
     public int compareTo(ColorMap c2) {
-        return occurCt -c2.occurCt;
+        return this.occurCt - c2.occurCt;
     }
+
     @Override
-    // Will allow you to find a previous entry in the HashTable
-    public boolean equals (Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
-        if (this.getClass() != o.getClass()) return false;
-        ColorMap c = (ColorMap)o;
-        return red==c.red && blue==c.blue && green==c.green;
+        if (o == null || getClass() != o.getClass()) return false;
+        ColorMap c = (ColorMap) o;
+        return red == c.red && green == c.green && blue == c.blue;
     }
-//    @Override
-//    //Bad hashCode
-//    public int hashCode() {
-//        return red + green + blue;
-//    }
+
     @Override
     public int hashCode() {
-        return 31 * red + 17 * green + blue * 13;  // A more distributed hash code
-}
-
+        return 31 * red + 17 * green + 13 * blue;
+    }
 }
