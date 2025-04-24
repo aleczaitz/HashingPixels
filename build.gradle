@@ -1,0 +1,32 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.openjfx:javafx-controls:21'
+    implementation 'org.openjfx:javafx-fxml:21'
+}
+
+javafx {
+    version = "21"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+application {
+    mainClass = 'gui.HashingPixelsApp'
+}
+
+tasks.withType(JavaExec) {
+    // Ensures JavaFX runs correctly
+    jvmArgs += [
+            "--module-path",
+            System.getProperty("java.home") + "/lib",
+            "--add-modules",
+            "javafx.controls,javafx.fxml"
+    ]
+}

@@ -12,7 +12,7 @@ public class IntegrationTest {
         String output = "test_inputEncoded.png";
 
         Encode encoder = new Encode(input, 4, 5);
-        encoder.makeEncoded(4, 3);
+        encoder.makeEncoded(4, 5);
 
         File outFile = new File(output);
         assertTrue(outFile.exists(), "Encoded output file should be created");

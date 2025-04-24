@@ -1,3 +1,5 @@
+package logic;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -49,6 +51,7 @@ public class Encode {
      * @param colormax maximum number of colors to use in final image
      */
     public void makeEncoded(int len, int colormax) {
+
         HashTable<ColorMap> hashTable = new HashTable<>();
 
         for (int y = 0; y < height; y++) {
@@ -126,7 +129,7 @@ public class Encode {
 
         for (int i = 0; i < files.length; i++) {
             Encode encoder = new Encode(files[i], 6, colorMax[i]);
-            encoder.makeEncoded(6, 5);
+            encoder.makeEncoded(6, 15);
         }
     }
 }
