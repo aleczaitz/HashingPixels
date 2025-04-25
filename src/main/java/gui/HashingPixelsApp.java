@@ -14,9 +14,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import javafx.embed.swing.SwingFXUtils;
+
 
 public class HashingPixelsApp extends Application {
 
@@ -102,8 +107,24 @@ public class HashingPixelsApp extends Application {
     }
 
     private void saveImage() {
-        // For now, output is saved automatically as filenameEncoded.png or filenameRed.png
-        // You can later let the user pick a save location
-        System.out.println("Output image saved in the same folder.");
+        if (transformedView.getImage() != null) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Image As");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("PNG files", "*.png")
+            );
+
+            File saveFile = fileChooser.showSaveDialog(null);
+            if (saveFile != null) {
+                try {
+                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(transformedView.getImage(), null);
+                    ImageIO.write(bufferedImage, "png", saveFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
+
+
 }
