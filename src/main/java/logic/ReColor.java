@@ -77,28 +77,29 @@ public class ReColor {
                 int pixel = img.getRGB(x, y);
                 int alpha = (pixel >> 24) & 0xff;
                 int origRed = (pixel >> 16) & 0xff;
-                int origGreen = (pixel >> 8) & 0xff;
-                int origBlue = pixel & 0xff;
 
-                // Blend original color with the selected color
-                int newRed = (int)(origRed * redFactor);
-                int newGreen = (int)(origGreen * greenFactor);
-                int newBlue = (int)(origBlue * blueFactor);
+                // Use the original red channel as brightness (like your makeRed)
+                int brightness = origRed;
 
-                // Clamp values between 0 and 255
+                // Now apply the selected color multiplied by brightness
+                int newRed = (int)(brightness * redFactor);
+                int newGreen = (int)(brightness * greenFactor);
+                int newBlue = (int)(brightness * blueFactor);
+
+                // Clamp to [0, 255]
                 newRed = Math.min(255, Math.max(0, newRed));
                 newGreen = Math.min(255, Math.max(0, newGreen));
                 newBlue = Math.min(255, Math.max(0, newBlue));
 
-                int blendedPixel = (alpha << 24) | (newRed << 16) | (newGreen << 8) | newBlue;
-                colorImg.setRGB(x, y, blendedPixel);
+                int tintedPixel = (alpha << 24) | (newRed << 16) | (newGreen << 8) | newBlue;
+                colorImg.setRGB(x, y, tintedPixel);
             }
         }
 
         try {
-            String baseFilename = new File(imageName).getName(); // example: test_input16.png
-            baseFilename = baseFilename.replaceAll("\\d+", ""); // remove any digits like 16
-            baseFilename = baseFilename.replace(".png", ""); // remove .png to avoid double
+            String baseFilename = new File(imageName).getName();
+            baseFilename = baseFilename.replaceAll("\\d+", "");
+            baseFilename = baseFilename.replace(".png", "");
             String customColorName = baseFilename + "CustomColor.png";
 
             ImageIO.write(colorImg, "png", new File(customColorName));
@@ -106,9 +107,8 @@ public class ReColor {
             System.err.println("Failed to write custom color image.");
             e.printStackTrace();
         }
-
-
     }
+
 
 
 
