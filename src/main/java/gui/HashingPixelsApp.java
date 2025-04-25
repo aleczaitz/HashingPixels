@@ -82,10 +82,23 @@ public class HashingPixelsApp extends Application {
         // New: Status label at the bottom
         statusLabel = new Label("Ready");
 
-        // HBox for buttons
-        HBox controls = new HBox(10, loadBtn, encodeBtn, recolorBtn, saveBtn, colorLimitInput, recolorPicker);
+        // Label for Max Colors
+        Label maxColorsLabel = new Label("Max Colors:");
+        maxColorsLabel.setStyle("-fx-text-fill: white;");
+
+        // Group Encode button and Max Colors input
+        HBox encodeGroup = new HBox(5, encodeBtn, maxColorsLabel, colorLimitInput);
+        encodeGroup.setAlignment(javafx.geometry.Pos.CENTER);
+
+        // Group Recolor button and ColorPicker
+        HBox recolorGroup = new HBox(5, recolorBtn, recolorPicker);
+        recolorGroup.setAlignment(javafx.geometry.Pos.CENTER);
+
+        // HBox for all controls
+        HBox controls = new HBox(15, loadBtn, encodeGroup, recolorGroup, saveBtn);
         controls.setAlignment(javafx.geometry.Pos.CENTER);
         controls.setPadding(new Insets(10));
+
 
         // New: wrap transformedView in VBox to add left padding
         VBox transformedContainer = new VBox(transformedView);
