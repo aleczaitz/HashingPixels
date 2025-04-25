@@ -23,6 +23,10 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import javafx.embed.swing.SwingFXUtils;
 
+/**
+ * Main JavaFX application that provides a graphical interface
+ * for loading, encoding, recoloring, and saving images.
+ */
 
 public class HashingPixelsApp extends Application {
 

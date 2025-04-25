@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Handles recoloring of images for demonstration and processing.
- * Currently, supports converting an image to red-channel only.
+ * Handles recoloring of an encoded image by replacing the dominant colors
+ * with new colors chosen by the user.
  */
 public class ReColor {
 

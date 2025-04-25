@@ -12,8 +12,9 @@ package logic;// QuadraticProbing Hash table class
 import java.util.ArrayList;
 
 /**
- * Probing table implementation of hash tables using quadratic probing.
- * Note that all "matching" is based on the equals method.
+ * A generic hashtable implementation using quadratic probing for collision resolution.
+ *
+ * @param <E> the type of elements stored in the hashtable
  */
 public class HashTable<E> {
 

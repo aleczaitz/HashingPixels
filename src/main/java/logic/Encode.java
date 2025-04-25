@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
- * Encodes an image by reducing the color palette using a hash-based quantization technique.
+ * Provides functionality to encode an image by reducing its color palette
+ * to a specified maximum number of colors using a custom-built hashtable.
  */
 public class Encode {
 
