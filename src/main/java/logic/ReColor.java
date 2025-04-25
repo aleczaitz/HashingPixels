@@ -69,6 +69,49 @@ public class ReColor {
         }
     }
 
+    public void makeColor(double redFactor, double greenFactor, double blueFactor) {
+        BufferedImage colorImg = new BufferedImage(width, height, img.getType());
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int pixel = img.getRGB(x, y);
+                int alpha = (pixel >> 24) & 0xff;
+                int origRed = (pixel >> 16) & 0xff;
+                int origGreen = (pixel >> 8) & 0xff;
+                int origBlue = pixel & 0xff;
+
+                // Blend original color with the selected color
+                int newRed = (int)(origRed * redFactor);
+                int newGreen = (int)(origGreen * greenFactor);
+                int newBlue = (int)(origBlue * blueFactor);
+
+                // Clamp values between 0 and 255
+                newRed = Math.min(255, Math.max(0, newRed));
+                newGreen = Math.min(255, Math.max(0, newGreen));
+                newBlue = Math.min(255, Math.max(0, newBlue));
+
+                int blendedPixel = (alpha << 24) | (newRed << 16) | (newGreen << 8) | newBlue;
+                colorImg.setRGB(x, y, blendedPixel);
+            }
+        }
+
+        try {
+            String baseFilename = new File(imageName).getName(); // example: test_input16.png
+            baseFilename = baseFilename.replaceAll("\\d+", ""); // remove any digits like 16
+            baseFilename = baseFilename.replace(".png", ""); // remove .png to avoid double
+            String customColorName = baseFilename + "CustomColor.png";
+
+            ImageIO.write(colorImg, "png", new File(customColorName));
+        } catch (IOException e) {
+            System.err.println("Failed to write custom color image.");
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
     public static void main(String[] args) {
         String[] files = {"chart.png", "bird.png", "butterfly.png", "cat.png", "dice.png", "flowers.png"};
         int[] colorMax = {5, 100, 100, 25, 6, 40};

@@ -32,6 +32,9 @@ public class HashingPixelsApp extends Application {
     private final int cube = 20;
     private final int colorLimit = 16;
     private Label statusLabel;
+    private javafx.scene.control.TextField colorLimitInput;
+    private javafx.scene.control.ColorPicker recolorPicker;
+
 
 
     public static void main(String[] args) {
@@ -49,6 +52,14 @@ public class HashingPixelsApp extends Application {
         transformedView.setPreserveRatio(true);
 
         primaryStage.setTitle("HashingPixels - Image Encoder");
+
+        colorLimitInput = new javafx.scene.control.TextField();
+        colorLimitInput.setPromptText("Max Colors (e.g., 16)");
+        colorLimitInput.setMaxWidth(120);
+
+        recolorPicker = new javafx.scene.control.ColorPicker();
+        recolorPicker.setStyle("-fx-background-color: #3a3a3a;");
+
 
         Button loadBtn = new Button("Load Image");
         Button encodeBtn = new Button("Encode");
@@ -72,7 +83,7 @@ public class HashingPixelsApp extends Application {
         statusLabel = new Label("Ready");
 
         // HBox for buttons
-        HBox controls = new HBox(10, loadBtn, encodeBtn, recolorBtn, saveBtn);
+        HBox controls = new HBox(10, loadBtn, encodeBtn, recolorBtn, saveBtn, colorLimitInput, recolorPicker);
         controls.setAlignment(javafx.geometry.Pos.CENTER);
         controls.setPadding(new Insets(10));
 
@@ -140,8 +151,14 @@ public class HashingPixelsApp extends Application {
     private void encodeImage() {
         if (currentFile != null) {
             try {
-                Encode encoder = new Encode(currentFile.getAbsolutePath(), cube, colorLimit);
-                encoder.makeEncoded(6, 15);
+                int maxColors = colorLimit; // default
+
+                if (!colorLimitInput.getText().isEmpty()) {
+                    maxColors = Integer.parseInt(colorLimitInput.getText());
+                }
+
+                Encode encoder = new Encode(currentFile.getAbsolutePath(), cube, maxColors);
+                encoder.makeEncoded(6, maxColors);
                 String path = currentFile.getAbsolutePath().replace(".png", "Encoded.png");
                 transformedView.setImage(new Image(new FileInputStream(path)));
                 statusLabel.setText("Image encoded!");
@@ -153,13 +170,25 @@ public class HashingPixelsApp extends Application {
     }
 
 
+
     private void recolorImage() {
         if (currentFile != null) {
             try {
+                javafx.scene.paint.Color selectedColor = recolorPicker.getValue();
+
                 ReColor recolorer = new ReColor(currentFile.getAbsolutePath(), cube, colorLimit);
-                recolorer.makeRed();
-                String path = currentFile.getAbsolutePath().replace(".png", "Red.png");
-                transformedView.setImage(new Image(new FileInputStream(path)));
+
+                recolorer.makeColor(
+                        selectedColor.getRed(),
+                        selectedColor.getGreen(),
+                        selectedColor.getBlue()
+                );
+
+                String basePath = currentFile.getAbsolutePath();
+                basePath = basePath.replace(".png", "CustomColor.png");
+
+                transformedView.setImage(new Image(new FileInputStream(basePath)));
+
                 statusLabel.setText("Image recolored!");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -167,7 +196,6 @@ public class HashingPixelsApp extends Application {
             }
         }
     }
-
 
     private void saveImage() {
         if (transformedView.getImage() != null) {

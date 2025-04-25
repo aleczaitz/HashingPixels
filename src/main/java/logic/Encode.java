@@ -124,7 +124,7 @@ public class Encode {
     }
 
     public static void main(String[] args) {
-        String[] files = {"chart.png", "bird.png", "butterfly.png", "cat.png", "dice.png", "flowers.png"};
+        String[] files = {"chart.png", "bird.png", "butterfly.png", "cat.png", "dice.png", "flowers.png",};
         int[] colorMax = {5, 100, 100, 25, 6, 40};
 
         for (int i = 0; i < files.length; i++) {
