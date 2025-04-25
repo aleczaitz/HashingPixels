@@ -73,8 +73,4 @@ I wanted to create a project that combined algorithmic problem-solving with crea
 
 ## Credits
 
-Created by Alec Zaitz.
-
----
-
-*Happy hashing!* 🏄‍
+Created by Alec Zaitz 🏄‍♂️
