@@ -112,6 +112,68 @@ public class Encode {
         System.out.println("Average Probe Count: " + hashTable.getAverageProbeCount());
     }
 
+    public BufferedImage getEncodedImage() {
+        HashTable<ColorMap> hashTable = new HashTable<>();
+
+        // First pass: count color frequencies
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int p = img.getRGB(x, y);
+                int alpha = (p >> 24) & 0xff;
+                int r = (p >> 16) & 0xff;
+                int g = (p >> 8) & 0xff;
+                int b = p & 0xff;
+                ColorMap cm = new ColorMap(alpha, r, g, b, cube);
+                ColorMap existing = hashTable.find(cm);
+
+                if (existing == null) {
+                    hashTable.insert(cm);
+                } else {
+                    existing.occurCt++;
+                }
+            }
+        }
+
+        // Get most frequent colors
+        ArrayList<ColorMap> sortedColors = hashTable.getAll();
+        sortedColors.sort(Comparator.reverseOrder());
+
+        ArrayList<Color> topColors = new ArrayList<>();
+        int limit = Math.min(colorLimit, sortedColors.size()); // <-- use user's colormax
+        for (int i = 0; i < limit; i++) {
+            topColors.add(sortedColors.get(i).getRepresentativeColor());
+        }
+
+        // Second pass: map every pixel to its closest top color
+        BufferedImage encoded = new BufferedImage(width, height, img.getType());
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int p = img.getRGB(x, y);
+                Color original = new Color((p >> 16) & 0xff, (p >> 8) & 0xff, p & 0xff);
+                Color closest = topColors.get(0);
+                int minDist = Integer.MAX_VALUE;
+
+                for (Color candidate : topColors) {
+                    int dist = findDistance(original, candidate);
+                    if (dist < minDist) {
+                        closest = candidate;
+                        minDist = dist;
+                    }
+                }
+
+                encoded.setRGB(x, y, closest.getRGB());
+            }
+        }
+
+        // No writing to file here! Just return the in-memory image
+        return encoded;
+    }
+
+
+
+
+
     /**
      * Calculates the Euclidean distance between two colors in RGB space.
      */

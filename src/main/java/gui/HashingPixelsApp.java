@@ -151,16 +151,19 @@ public class HashingPixelsApp extends Application {
     private void encodeImage() {
         if (currentFile != null) {
             try {
-                int maxColors = colorLimit; // default
+                int maxColors = colorLimit;
 
                 if (!colorLimitInput.getText().isEmpty()) {
                     maxColors = Integer.parseInt(colorLimitInput.getText());
                 }
 
+                // Create encoder with updated color limit
                 Encode encoder = new Encode(currentFile.getAbsolutePath(), cube, maxColors);
-                encoder.makeEncoded(6, maxColors);
-                String path = currentFile.getAbsolutePath().replace(".png", "Encoded.png");
-                transformedView.setImage(new Image(new FileInputStream(path)));
+
+                // Now call the encoder to get the image (no parameters needed)
+                BufferedImage outputImage = encoder.getEncodedImage();
+
+                transformedView.setImage(SwingFXUtils.toFXImage(outputImage, null));
                 statusLabel.setText("Image encoded!");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -171,6 +174,7 @@ public class HashingPixelsApp extends Application {
 
 
 
+
     private void recolorImage() {
         if (currentFile != null) {
             try {
@@ -178,17 +182,13 @@ public class HashingPixelsApp extends Application {
 
                 ReColor recolorer = new ReColor(currentFile.getAbsolutePath(), cube, colorLimit);
 
-                recolorer.makeColor(
+                BufferedImage outputImage = recolorer.makeColorImage(
                         selectedColor.getRed(),
                         selectedColor.getGreen(),
                         selectedColor.getBlue()
                 );
 
-                String basePath = currentFile.getAbsolutePath();
-                basePath = basePath.replace(".png", "CustomColor.png");
-
-                transformedView.setImage(new Image(new FileInputStream(basePath)));
-
+                transformedView.setImage(SwingFXUtils.toFXImage(outputImage, null));
                 statusLabel.setText("Image recolored!");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -196,6 +196,7 @@ public class HashingPixelsApp extends Application {
             }
         }
     }
+
 
     private void saveImage() {
         if (transformedView.getImage() != null) {

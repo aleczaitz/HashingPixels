@@ -109,6 +109,34 @@ public class ReColor {
         }
     }
 
+    public BufferedImage makeColorImage(double redFactor, double greenFactor, double blueFactor) {
+        BufferedImage colorImg = new BufferedImage(width, height, img.getType());
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int pixel = img.getRGB(x, y);
+                int alpha = (pixel >> 24) & 0xff;
+                int origRed = (pixel >> 16) & 0xff;
+
+                int brightness = origRed;
+
+                int newRed = (int)(brightness * redFactor);
+                int newGreen = (int)(brightness * greenFactor);
+                int newBlue = (int)(brightness * blueFactor);
+
+                newRed = Math.min(255, Math.max(0, newRed));
+                newGreen = Math.min(255, Math.max(0, newGreen));
+                newBlue = Math.min(255, Math.max(0, newBlue));
+
+                int tintedPixel = (alpha << 24) | (newRed << 16) | (newGreen << 8) | newBlue;
+                colorImg.setRGB(x, y, tintedPixel);
+            }
+        }
+
+        return colorImg;
+    }
+
+
 
 
 
